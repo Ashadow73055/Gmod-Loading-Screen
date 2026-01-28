@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    height: 100vh;
+    overflow: hidden;
+    color: #fff;
+    background: linear-gradient(
+        120deg,
+        #0f0c29,
+        #302b63,
+        #24243e,
+        #1a1a2e
+    );
+    background-size: 400% 400%;
+    animation: gradientMove 20s ease infinite;
+}
+
+/* Animated gradient */
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Particle canvas */
+#particles {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+/* Dark blur overlay */
+.overlay {
+    position: absolute;
+    inset: 0;
+    backdrop-filter: blur(6px);
+    background: radial-gradient(
+        circle,
+        rgba(255,255,255,0.05),
+        rgba(0,0,0,0.6)
+    );
+    animation: pulse 6s ease-in-out infinite;
+    z-index: 1;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 0.9; }
+}
+
+.container {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+h1 {
+    font-size: 4rem;
+    font-weight: 700;
+    text-shadow: 0 0 25px rgba(255,255,255,0.35);
+}
+
+.subtitle {
+    letter-spacing: 4px;
+    margin-bottom: 40px;
+    opacity: 0.8;
+}
+
+.loader {
+    width: 420px;
+    height: 10px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #ff9a9e, #fad0c4);
+    animation: load 12s linear infinite;
+}
+
+@keyframes load {
+    0% { width: 0%; }
+    100% { width: 100%; }
+}
+
+#tip {
+    margin-top: 15px;
+    font-size: 0.9rem;
+    opacity: 0.75;
+}
