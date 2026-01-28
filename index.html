@@ -1,29 +1,406 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Underrail Gaming</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Underrail Gaming | Prop Hunt</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+/* =========================
+   BLUE & ORANGE PROP HUNT
+   ========================= */
+:root {
+    --bg-dark: #0f1720;
+    --bg-mid: #1b2a3a;
+    --bg-light: #2a3f55;
+
+    --accent-blue: #4aa3df;
+    --accent-orange: #f39c3d;
+
+    --text-main: #e9ecef;
+    --text-dim: #b9c4cc;
+
+    --panel-bg: rgba(20, 30, 40, 0.78);
+}
+
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* BODY */
+body {
+    height: 100vh;
+    overflow: hidden;
+    color: var(--text-main);
+    background: linear-gradient(
+        135deg,
+        var(--bg-dark),
+        var(--bg-mid),
+        var(--bg-light)
+    );
+    background-size: 260% 260%;
+    animation: bgMove 35s ease infinite;
+}
+
+@keyframes bgMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* LOFI BADGE */
+.lofi {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    color: var(--accent-orange);
+    background: rgba(0,0,0,0.35);
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 0 12px rgba(0,0,0,0.5);
+}
+
+/* animated dot */
+.lofi::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    background: var(--accent-blue);
+    border-radius: 50%;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.3; }
+    50% { opacity: 1; }
+    100% { opacity: 0.3; }
+}
+
+/* PARTICLES */
+#particles {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+/* WAVES */
+.wave {
+    position: absolute;
+    width: 120%;
+    height: 120%;
+    background: radial-gradient(
+        circle,
+        rgba(74,163,223,0.07),
+        transparent 70%
+    );
+    animation: waveMove 32s linear infinite;
+    z-index: 1;
+}
+
+.wave:nth-child(2) {
+    animation-duration: 42s;
+    opacity: 0.35;
+}
+
+@keyframes waveMove {
+    from { transform: translate(-10%, -10%); }
+    to { transform: translate(10%, 10%); }
+}
+
+/* OVERLAY */
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(8, 12, 18, 0.45);
+    backdrop-filter: blur(3px);
+    z-index: 2;
+}
+
+/* FLOATING PROPS */
+.prop {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background: rgba(255,255,255,0.14);
+    border-radius: 3px;
+    animation: drift 22s linear infinite;
+    z-index: 2;
+}
+
+@keyframes drift {
+    from { transform: translateY(110vh) rotate(0deg); }
+    to { transform: translateY(-10vh) rotate(360deg); }
+}
+
+/* SIDE PANELS */
+.side-panel {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 260px;
+    padding: 25px;
+    background: var(--panel-bg);
+    backdrop-filter: blur(10px);
+    border-radius: 14px;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    border: 1px solid rgba(255,255,255,0.06);
+    box-shadow:
+        inset 0 0 18px rgba(0,0,0,0.6),
+        0 0 20px rgba(0,0,0,0.4);
+    z-index: 3;
+}
+
+.left { left: 40px; }
+.right { right: 40px; }
+
+.side-panel h3 {
+    margin-bottom: 10px;
+    color: var(--accent-orange);
+    font-weight: 600;
+}
+
+/* SERVER INFO EXTRA */
+.server-divider {
+    margin: 14px 0 10px;
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,0.25),
+        transparent
+    );
+}
+
+.server-extra {
+    font-size: 0.85rem;
+    color: var(--accent-orange);
+    letter-spacing: 1px;
+    opacity: 0.9;
+}
+
+/* CENTER */
+.center {
+    position: relative;
+    z-index: 4;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.card {
+    padding: 55px 90px;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+}
+
+/* TITLE */
+.card h1 {
+    font-size: 3rem;
+    letter-spacing: 2px;
+    color: var(--text-main);
+    text-shadow:
+        0 1px 0 rgba(0,0,0,0.8),
+        0 0 14px rgba(74,163,223,0.5);
+}
+
+.card .mode {
+    margin-top: 6px;
+    letter-spacing: 5px;
+    color: var(--accent-orange);
+}
+
+/* LOADERS */
+.circle-loader {
+    margin: 28px auto 18px;
+    width: 90px;
+    height: 90px;
+    border: 6px solid rgba(255,255,255,0.12);
+    border-top: 6px solid var(--accent-blue);
+    border-radius: 50%;
+    animation: spin 1.3s linear infinite;
+    box-shadow: 0 0 12px rgba(74,163,223,0.5);
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.loading-bar {
+    width: 100%;
+    height: 10px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.loading-progress {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(
+        90deg,
+        var(--accent-blue),
+        var(--accent-orange)
+    );
+    animation: load 14s infinite;
+}
+
+@keyframes load {
+    from { width: 0%; }
+    to { width: 100%; }
+}
+
+/* TIPS */
+#tip {
+    margin-top: 18px;
+    font-size: 0.9rem;
+    color: var(--text-dim);
+}
+
+/* FOOTER */
+footer {
+    position: absolute;
+    bottom: 18px;
+    width: 100%;
+    text-align: center;
+    font-size: 0.75rem;
+    opacity: 0.5;
+    z-index: 4;
+}
+</style>
 </head>
+
 <body>
-    <canvas id="particles"></canvas>
-    <audio id="music" autoplay loop>
-        <source src="lofi.mp3" type="audio/mpeg">
-    </audio>
 
-    <div class="overlay"></div>
+<div class="lofi">LOFI</div>
 
-    <div class="container">
+<canvas id="particles"></canvas>
+<div class="wave"></div>
+<div class="wave"></div>
+<div class="overlay"></div>
+
+<div class="prop" style="left:10%; animation-delay:0s;"></div>
+<div class="prop" style="left:25%; animation-delay:6s;"></div>
+<div class="prop" style="left:70%; animation-delay:2s;"></div>
+<div class="prop" style="left:85%; animation-delay:9s;"></div>
+
+<audio id="music" autoplay loop>
+    <source src="lofi.mp3" type="audio/mpeg">
+</audio>
+
+<div class="side-panel left">
+    <h3>Server Info</h3>
+    Mode: Prop Hunt<br>
+    Community: Underrail Gaming<br>
+    Friendly Staff<br>
+    Custom Maps
+
+    <div class="server-divider"></div>
+    <div class="server-extra">🔧 Custom Models Enabled</div>
+</div>
+
+<div class="side-panel right">
+    <h3>Rules</h3>
+    • No exploits<br>
+    • No mic spam<br>
+    • Respect players<br>
+    • Have fun
+</div>
+
+<div class="center">
+    <div class="card">
         <h1>Underrail Gaming</h1>
-        <p class="subtitle">Chill • Prop Hunt • Community</p>
+        <div class="mode">PROP HUNT</div>
 
-        <div class="loader">
-            <div class="progress"></div>
-        </div>
+        <div class="circle-loader"></div>
+        <div class="loading-bar"><div class="loading-progress"></div></div>
 
-        <p id="tip">Loading assets...</p>
+        <div id="tip">Loading assets...</div>
     </div>
+</div>
 
-    <script src="script.js"></script>
+<footer>
+    Underrail Gaming • Garry’s Mod • Prop Hunt
+</footer>
+
+<script>
+const tips = [
+    "Welcome to Underrail Gaming",
+    "Props win by blending in",
+    "Hunters: listen carefully",
+    "Loading map and assets",
+    "Connecting to server...",
+	"Sit back and enjoy the vibes",
+];
+
+let i = 0;
+const tipEl = document.getElementById("tip");
+
+setInterval(() => {
+    i = (i + 1) % tips.length;
+    tipEl.textContent = tips[i];
+}, 3000);
+
+document.body.addEventListener("click", () => {
+    document.getElementById("music").play();
+});
+
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+
+function resize() {
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+}
+resize();
+
+const particles = Array.from({ length: 80 }, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 2 + 0.5,
+    dx: Math.random() * 0.3,
+    dy: Math.random() * 0.3,
+    a: Math.random()
+}));
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${p.a})`;
+        ctx.fill();
+        p.x += p.dx;
+        p.y += p.dy;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y > canvas.height) p.y = 0;
+    });
+    requestAnimationFrame(animate);
+}
+
+animate();
+window.addEventListener("resize", resize);
+</script>
+
 </body>
 </html>
